@@ -78,11 +78,13 @@ def tracker():
     return render_template('display.html')
   else:
     bus_map = folium.Map(location=latlng, zoom_start=15)
+    """
     bus_map.add_child(folium.Marker(location=latlng,
                                     popup=escape_apostrophes(loc.address),
                                     icon=folium.Icon(color='blue')))
-
+    """
     # Call API for bus locations
+    """
     bus_list = get_buses(loc.lat, loc.lng, app.vars['radius'])
 
     for bus in bus_list:
@@ -95,7 +97,7 @@ def tracker():
                                            weight = 1,
                                            fill_opacity = 0.8,
                                            rotation = 30).add_to(bus_map)
-  
+    """
     bus_map.save(map_path)
     return render_template('display.html')
   pass
@@ -142,4 +144,5 @@ def geoerror():
 
 
 if __name__ == '__main__':
+  app.debug = True
   app.run(host='0.0.0.0')
