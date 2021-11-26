@@ -41,7 +41,10 @@ def main():
 @app.route('/index.html', methods=['GET', 'POST'])
 def index():
   if request.method == 'GET':
-    return render_template('input.html')
+    #return render_template('input.html')
+    map_name = f"map-.html"
+    app.vars['map_path'] = os.path.join(app.root_path, 'maps/' + map_name)
+    return redirect('/tracker.html')
   elif request.method == 'POST':
     app.vars['location'] = request.form['location']
     app.vars['radius'] = request.form['radius']
@@ -64,12 +67,13 @@ def show_map():
 
 @app.route('/tracker.html')
 def tracker():
+  """
   loc = geocoder.osm(app.vars.get('location'))
   if loc.lat is not None and loc.lng is not None:
     latlng = [loc.lat, loc.lng]
   else:
     return redirect('/geoerror.html')
-  
+  """
   # insist on a valid map config
   map_path = app.vars.get("map_path")
   if not map_path:
@@ -77,7 +81,10 @@ def tracker():
   if app.vars.get("cache") == "yes" and Path(map_path).exists():
     return render_template('display.html')
   else:
-    bus_map = folium.Map(location=latlng, zoom_start=15)
+    #bus_map = folium.Map(location=latlng, zoom_start=15)
+    bus_map = folium.Map(location=[37.7794,-122.4194],
+                zoom_start=6,tiles=None)
+    folium.TileLayer('cartodbpositron',name='BackGround',control=False).add_to(bus_map)
     """
     bus_map.add_child(folium.Marker(location=latlng,
                                     popup=escape_apostrophes(loc.address),
