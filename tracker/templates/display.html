@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Map View{% endblock %}
+{% block content %}
+<!-- map -->
+<div style="margin-left: 20px;">
+  <iframe src="{{ url_for('show_map') }}" width="98%" height="90%" frameborder="1" style="position: absolute;"></iframe>
+</div>
+{% endblock %}
