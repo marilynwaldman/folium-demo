@@ -42,7 +42,7 @@ def main():
 def index():
   if request.method == 'GET':
     #return render_template('input.html')
-    map_name = f"CAMidSection.html"
+    map_name = f"CenCal.html"
     app.vars['map_path'] = os.path.join(app.root_path, 'maps/' + map_name)
     return redirect('/tracker.html')
   elif request.method == 'POST':
