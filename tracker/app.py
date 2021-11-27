@@ -42,7 +42,7 @@ def main():
 def index():
   if request.method == 'GET':
     #return render_template('input.html')
-    map_name = f"map-.html"
+    map_name = f"CAMidSection.html"
     app.vars['map_path'] = os.path.join(app.root_path, 'maps/' + map_name)
     return redirect('/tracker.html')
   elif request.method == 'POST':
@@ -80,6 +80,8 @@ def tracker():
     return redirect('/error.html')
   if app.vars.get("cache") == "yes" and Path(map_path).exists():
     return render_template('display.html')
+  if Path(map_path).exists():
+    return render_template('display.html')  
   else:
     #bus_map = folium.Map(location=latlng, zoom_start=15)
     bus_map = folium.Map(location=[37.7794,-122.4194],
