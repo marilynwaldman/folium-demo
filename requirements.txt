@@ -6,3 +6,6 @@ gunicorn
 flask
 jinja2
 werkzeug
+flask
+flask_bootstrap
+flask_nav
