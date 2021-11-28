@@ -87,14 +87,11 @@ def tracker():
   map_path = app.vars.get("map_path")
   if not map_path:
     return redirect('/error.html')
-  else:
-    return render_template('display.html')  
-  """ 
   if app.vars.get("cache") == "yes" and Path(map_path).exists():
     return render_template('display.html')
   if Path(map_path).exists():
     return render_template('display.html')  
-  """
+
 
   pass
 
