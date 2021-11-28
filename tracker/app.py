@@ -7,12 +7,36 @@ import json
 from functools import wraps, update_wrapper
 from datetime import datetime
 from pathlib import Path
+from flask_bootstrap import Bootstrap
+from flask_nav import Nav
+from flask_nav.elements import *
+from dominate.tags import img
+
 
 from ediblepickle import checkpoint
 from flask import Flask, render_template, request, redirect, url_for, send_file, make_response
 
 
+###############################################
+#      Define navbar with logo                #
+###############################################
+logo = img(src='./static/img/logo.png', height="50", width="50", style="margin-top:-15px")
+#here we define our menu items
+
+topbar = Navbar(logo,
+                View('Home', 'main'),
+              
+                )
+
+# registers the "top" menubar
+nav = Nav()
+nav.register_element('top', topbar)
+
+
+
+
 app = Flask(__name__)
+Bootstrap(app)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.vars = {}
 
@@ -151,6 +175,7 @@ def geoerror():
   details = "There was a problem getting coordinates for the location you requested."
   return render_template('error.html', culprit='Geocoder', details=details)
 
+nav.init_app(app)
 
 if __name__ == '__main__':
   app.debug = True
