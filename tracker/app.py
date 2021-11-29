@@ -46,17 +46,7 @@ def escape_apostrophes(string):
 def escape_spaces(string):
   return string.replace(" ", "_")
 
-def nocache(view):
-  @wraps(view)
-  def no_cache(*args, **kwargs):
-    response = make_response(view(*args, **kwargs))
-    response.headers['Last-Modified'] = datetime.now()
-    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '-1'
-    return response
-        
-  return update_wrapper(no_cache, view)
+
 
 @app.route('/')
 def main():
@@ -67,11 +57,11 @@ def index():
   if request.method == 'GET':
     #return render_template('input.html')
     map_name = f"CenCal.html"
-    app.vars['map_path'] = os.path.join(app.root_path, 'maps/' + map_name)
+    app.vars['map_path'] = os.path.join(app.root_path, 'static/' + map_name)
     return redirect('/tracker.html')
 
 @app.route('/maps/map.html')
-@nocache
+
 def show_map():
   map_path = app.vars.get("map_path")
   map_file = Path(map_path)
@@ -87,8 +77,6 @@ def tracker():
   map_path = app.vars.get("map_path")
   if not map_path:
     return redirect('/error.html')
-  if app.vars.get("cache") == "yes" and Path(map_path).exists():
-    return render_template('display.html')
   if Path(map_path).exists():
     return render_template('display.html')  
 
