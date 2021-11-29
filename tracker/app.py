@@ -40,13 +40,6 @@ Bootstrap(app)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.vars = {}
 
-def escape_apostrophes(string):
-  return string.replace(r"'", r"\'")
-
-def escape_spaces(string):
-  return string.replace(" ", "_")
-
-
 
 @app.route('/')
 def main():
