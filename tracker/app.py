@@ -50,8 +50,16 @@ def index():
   if request.method == 'GET':
     #return render_template('input.html')
     map_name = f"CenCal.html"
-    app.vars['map_path'] = os.path.join(app.root_path, 'static/' + map_name)
-    return redirect('/tracker.html')
+    #have to set map path - used by template
+    map_path = os.path.join(app.root_path, 'static/' + map_name)
+    app.vars['map_path'] = map_path
+    
+    if Path(map_path).exists():
+        return render_template('display.html')
+    else:     
+        return redirect('/maperror.html')
+
+    pass
 
 @app.route('/maps/map.html')
 
@@ -62,17 +70,6 @@ def show_map():
     return send_file(map_path)
   else:
     return render_template('error.html', culprit='map file', details="the map file couldn't be loaded")
-
-@app.route('/tracker.html')
-def tracker():
-  
-  # insist on a valid map config
-  map_path = app.vars.get("map_path")
-  if not map_path:
-    return redirect('/error.html')
-  if Path(map_path).exists():
-    return render_template('display.html')  
-
 
   pass
 
@@ -86,10 +83,10 @@ def apierror():
   details = "There was an error with one of the API calls you attempted."
   return render_template('error.html', culprit='API', details=details)
 
-@app.route('/geoerror.html')
+@app.route('/maperror.html')
 def geoerror():
-  details = "There was a problem getting coordinates for the location you requested."
-  return render_template('error.html', culprit='Geocoder', details=details)
+  details = "Map not found."
+  return render_template('error.html', culprit='the Map', details=details)
 
 nav.init_app(app)
 
